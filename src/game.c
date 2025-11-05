@@ -24,12 +24,18 @@ bool game_over(unsigned int score, unsigned int length) {
   mvprintw(start_y + 3, (max_x - 36) / 2, "Press ENTER to restart or Q to quit");
   
   refresh(); // Refresh the screen
-  int c = getch(); // Wait for user input
-  
-  // If user pressed ENTER restart the game
-  if (c == '\n' || c == KEY_ENTER) {
-    return true; // Restart the game
-  }
-  
-  return false; // Do not restart the game
+  napms(500); // Wait for 500 miliseconds before allowing user to press character (because sometimes when you die you can acidentally restart or quit if you dont want to)
+  int c = 0;
+
+  do {
+    c = getch(); // Wait for user input
+
+    // If user pressed ENTER restart the game and if pressed q/Q then quit the game
+    if (c == KEY_ENTER || c == '\n') {
+      return true; // Restart game
+    } else if (c == 'q' || c == 'Q') {
+      return false; // Quit game
+    }
+  } while (1);
+    
 }

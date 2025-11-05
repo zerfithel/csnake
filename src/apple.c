@@ -24,7 +24,9 @@ void place_apple(Apple *apple, Snake *head, size_t max[2]) {
 
 // Function to draw an apple
 void draw_apple(Apple *apple) {
+  attron(COLOR_PAIR(APPLE)); // Enable color 2 (red)
   mvaddch(apple->y, apple->x, APPLE_CHAR); // Draw apple character '@' at x, y coordinates
+  attroff(COLOR_PAIR(APPLE)); // Disable color 2 (red)
   return;
 }
 

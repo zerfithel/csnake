@@ -73,17 +73,18 @@ void update_snake(Snake *head) {
 
 // Function to add a new segment to the snake
 void lengthen_snake(Snake *head) {
-  // Recursive call to find last element of snake
-  if (head->next != NULL) { 
-    lengthen_snake(head->next);
-    return;
+  Snake *current = head; // Pointer to head segment (then it points to last segment)
+  
+  // Iterate on segments
+  while (current->next != NULL) {
+    current = current->next; // Go to the next segment
   }
 
   /* Create new segment and assign values to it (x, y, direction) */
-  head->next = malloc(sizeof(Snake));
-  head->next->x = head->x;
-  head->next->y = head->y;
-  head->next->next = NULL;
+  current->next = malloc(sizeof(Snake));
+  current->next->x = current->x;
+  current->next->y = current->y;
+  current->next->next = NULL;
 
   return;
 }
@@ -91,11 +92,14 @@ void lengthen_snake(Snake *head) {
 // Function to draw whole snake to the screen
 void draw_snake(Snake *head) {
   Snake *current = head; // variable that will point to one segment
-  
+  attron(COLOR_PAIR(SNAKE)); // Enable color 1 (green)
+
   while (current != NULL) { // Iterate until next is pointing to NULL (it means that its last segment of linked list)
     mvaddch(current->y, current->x, SNAKE_CHAR); // Print snake char 'O' at x and y coordinate
     current = current->next; // Move to next segment
   }
+
+  attroff(COLOR_PAIR(SNAKE)); // Disable color 1 (green)
 
   refresh(); // Refresh ncurses screen
   return;

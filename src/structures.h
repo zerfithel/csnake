@@ -2,11 +2,14 @@
 #define STRUCTURES_H
 
 #define START_SIZE 8
-#define APPLE_CHAR '@'
-#define SNAKE_CHAR 'O'
+#define APPLE_CHAR ' '
+#define SNAKE_CHAR ' '
 
-#define WIDTH 40
-#define HEIGHT 20
+#define APPLE_COLOR COLOR_RED
+#define SNAKE_COLOR COLOR_GREEN
+
+#define SNAKE 1
+#define APPLE 2
 
 enum DIRECTIONS {
   DOWN,

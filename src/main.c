@@ -26,6 +26,10 @@ int main(void) {
   curs_set(0); // Disable cursor
   keypad(stdscr, TRUE); // Enable keypad
   nodelay(stdscr, TRUE); // For zero delay players
+  
+  start_color(); // Enable colors
+  init_pair(SNAKE, COLOR_GREEN, COLOR_GREEN); // Set color 1 to snake color (green)
+  init_pair(APPLE, COLOR_RED, COLOR_RED); // Set color 2 to apple color (apple)
 
   size_t sizes[2] = { COLS, LINES }; // Table containing columns and lines of map
 
@@ -64,6 +68,8 @@ play_again:
     refresh(); // Refresh the screen to view all things
     napms(300); // Sleep for 300 miliseconds
   }
+
+  attroff(COLOR_PAIR(1)); // Disable colors
   
   // After escaping the loop display game over screen
   if (game_over(score, score + START_SIZE)) {
@@ -72,6 +78,7 @@ play_again:
     delete_snake(snake); // Remove old snake
     snake = new_snake(START_SIZE); // Create new snake
     reset_score(); // Reset score
+    attron(COLOR_PAIR(1)); // Enable colors
     goto play_again; // Go to start of the loop
   }
 

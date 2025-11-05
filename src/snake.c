@@ -83,6 +83,7 @@ void lengthen_snake(Snake *head) {
   head->next = malloc(sizeof(Snake));
   head->next->x = head->x;
   head->next->y = head->y;
+  head->next->next = NULL;
 
   return;
 }
@@ -172,7 +173,7 @@ bool is_snake_touching_itself(Snake *head) {
   Snake *current = head->next; // Start from the segment after the head
   while (current != NULL) {
     // If head is touching any segment after it return true (lose)
-    if (head_x == current->x && head->y == current->y) {
+    if (head_x == current->x && head_y == current->y) {
       return true;
     }
 
@@ -198,5 +199,5 @@ void delete_snake(Snake *head) {
 
 // Return true if snake did hit the border
 bool did_snake_hit_border(Snake *head) {
-  return (head->x == COLS || head->x == -1 || head->y == LINES || head->y == -1);
+  return (head->x < 0 || head->x >= COLS || head->y < 0 || head->y >= LINES);
 }

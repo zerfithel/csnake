@@ -13,10 +13,10 @@ Apple new_apple(size_t max[2]) {
 }
 
 // Function to place an apple (if its at place where player it retry)
-void place_apple(Apple *apple, Snake *head) {
+void place_apple(Apple *apple, Snake *head, size_t max[2]) {
   do {
-    apple->x = rand() % WIDTH; // Generate x
-    apple->y = rand() % HEIGHT; // Generate y
+    apple->x = rand() % max[0]; // Generate x
+    apple->y = rand() % max[1]; // Generate y
   } while (is_snake_at(head, apple->x, apple->y)); // Do until its places on free spot
 
   return;

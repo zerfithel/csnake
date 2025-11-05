@@ -27,7 +27,7 @@ bool game_over(unsigned int score, unsigned int length) {
   int c = getch(); // Wait for user input
   
   // If user pressed ENTER restart the game
-  if (c == '\n') {
+  if (c == '\n' || c == KEY_ENTER) {
     return true; // Restart the game
   }
   

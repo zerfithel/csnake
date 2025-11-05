@@ -33,7 +33,7 @@ int main(void) {
   Apple apple = new_apple(sizes); // Create apple
   unsigned int score = 0; // Score (amount of eaten apples)
 
-  place_apple(&apple, snake); // Place one apple randomly
+  place_apple(&apple, snake, sizes); // Place one apple randomly
 
   // Infinite loop until player loses
 play_again:
@@ -48,7 +48,7 @@ play_again:
     if (is_snake_on_apple(snake, &apple)) {
       lengthen_snake(snake);
       score++;
-      place_apple(&apple, snake);
+      place_apple(&apple, snake, sizes);
     }
 
     // If player loses then escape the loop

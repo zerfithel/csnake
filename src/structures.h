@@ -19,7 +19,6 @@ enum DIRECTIONS {
 typedef struct Snake {
   int x; // x coordinate
   int y; // y Coordinate
-  int direction; // direction where snake/segment is moving
   struct Snake *next; // pointer to next segment
 } Snake;
 

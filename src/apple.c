@@ -5,7 +5,7 @@
 #include "structures.h"
 
 // Function to create a new apple (assign 'randomly generated' x and y to it and return it)
-Apple new_apple(int max[2]) {
+Apple new_apple(size_t max[2]) {
   Apple apple;
   apple.x = rand() % max[0]; // Generate x
   apple.y = rand() % max[1]; // Generate y

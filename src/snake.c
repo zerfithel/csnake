@@ -4,20 +4,43 @@
 
 #include "structures.h"
 
+extern int direction; // main.c
+
+// Forward declaration for new_snake()
+void delete_snake(Snake *head);
+
 // Function to create a new snake
 // segments - how long the snake should be
 Snake *new_snake(unsigned int segments) {
-  if (segments == 0) return NULL; // No segments to create
-  
-  Snake *head = malloc(sizeof(Snake)); // Create new structures
-  
-  /* Default x, y and direction */
-  head->x = 0;
-  head->y = 0;
-  head->direction = RIGHT;
-  head->next = new_snake(segments - 1); // Recursive call to create another segment
+  if (segments == 0) return NULL; // No segments to create = error
 
-  return head; // Return head of created snake
+  Snake *head = NULL;
+  Snake *previous = NULL;
+
+  /* I chagned recursion to iteration in case of very long snake */
+  for (unsigned int i = 0; i < segments; i++) {
+    Snake *node = malloc(sizeof(Snake));
+    if (node == NULL) {
+      delete_snake(head); // Remove everything
+      return NULL; // Error
+    }
+
+    /* Assign values to snake segment */
+    node->x = segments - i; // Set x this way so it wont spawn in one block
+    node->y = 0;
+    direction = RIGHT; // Global variable
+    node->next = NULL;
+
+    if (previous) {
+      previous->next = node;
+    } else {
+      head = node;
+    }
+
+    previous = node;
+  }
+
+  return head; // Return snake
 }
 
 // Function to update snake moving direction
@@ -26,23 +49,23 @@ void update_snake(Snake *head) {
 
   switch(c) {
     case KEY_DOWN: // arrow down = moving down, same applies to bottom cases
-      if (head->direction != UP) {
-        head->direction = DOWN;
+      if (direction != UP) {
+        direction = DOWN;
       }
       break;
     case KEY_UP:
-      if (head->direction != DOWN) {
-        head->direction = UP;
+      if (direction != DOWN) {
+        direction = UP;
       }
       break;
     case KEY_LEFT:
-      if (head->direction != RIGHT) {
-        head->direction = LEFT;
+      if (direction != RIGHT) {
+        direction = LEFT;
       }
       break;
     case KEY_RIGHT:
-      if (head->direction != LEFT) {
-        head->direction = RIGHT;
+      if (direction != LEFT) {
+        direction = RIGHT;
       }
       break;
   }
@@ -60,7 +83,6 @@ void lengthen_snake(Snake *head) {
   head->next = malloc(sizeof(Snake));
   head->next->x = head->x;
   head->next->y = head->y;
-  head->next->direction = head->direction;
 
   return;
 }
@@ -90,7 +112,7 @@ void move_snake(Snake *head) {
   int prev_x = head->x;
   int prev_y = head->y;
 
-  switch(head->direction) {
+  switch(direction) {
     case DOWN:
       head->y++; // If moving down increase y (it looks weird but thats just how ncurses work idk). Same applies to cases below
       break;
@@ -159,4 +181,22 @@ bool is_snake_touching_itself(Snake *head) {
 
   // If loop was escaped, game still continues
   return false;
+}
+
+void delete_snake(Snake *head) {
+  Snake *current = head; // Current element
+  Snake *next; // Next element
+
+  while (current != NULL) {
+    next = current->next; // Remember next element address
+    free(current); // Free current element
+    current = next; // Go to the next element
+  }
+
+  return;
+}
+
+// Return true if snake did hit the border
+bool did_snake_hit_border(Snake *head) {
+  return (head->x == COLS || head->x == -1 || head->y == LINES || head->y == -1);
 }

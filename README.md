@@ -14,7 +14,6 @@
 typedef struct Snake {
     int x; // x coordinate of segment
     int y; // y coordinate of segment
-    int direction; // direction where snake is moving
     struct Snake *next; // pointer to the next 'clone' of this structure, if it points to NULL it means we are at last segment
 } Snake;
 ```
@@ -34,7 +33,7 @@ The `linked list` structure is explained here: [wikipedia.org/wiki/Linked_list](
 
 ### Main function (main.c)
 
-First inside the `main()` function a new snake is being created with the `new_snake(n)` function which creates a new snake with n-segments and returns it. Then it creates a new apple structure using `new_apple(table)` where table is an array of both columns and lines of the map. The `place_apple()` function updates the apple structures by 'randomizing' x and y coordinate for apple, then it checks if snake is already at these coordinates with `is_snake_at(Snake *s, int x, int y)` function. If this function returns true (snake is there) then it regenerates the apple until it finds an empty place. The `place_apple()` function just places the apple by updating the apple structure but it doesnt draw it and thats where `draw_apple(Apple *a)` function comes into, it takes an apple structure and draws and apple at x and y coordinate defined in the apple structure `a`. Snake moving mechanism is implemented in `update_snake(Snake *s)` function that will wait for user to click an arrow key and depending on the key it will set an moving direction inside a snake structure (up arrow = moving up, left = moving left etc.). Next the `move_snake(Snake *s)` function is called that will read moving direction that was set with `update_snake(Snake *s)` and will either increaseor decrease the `x` or `y` coordinate (depending on the moving direction) of the head. Inside a `while` loop it will iterate on all segments and move these to previous location of previous segment that was moved. Then `draw_snake(Snake *head)` is called which will iterate with `while` loop on every snake segment and print snake character `O` at x and y saved inside at segment. If it reaches an segment where pointer to next segment points to `NULL` then it knows this is last segment and will draw last segment and quit. In every loop it also checks by using `is_snake_on_apple(Snake *s, Apple *a)` function to determine if snakes head x and y coordinate is same as apples coordinate and if yes it returns true. Inside the main loop it calls the `lengthen_snake(Snake *head)` function to add a new segment at the end of the snake.
+First inside the `main()` function a new snake is being created with the `new_snake(n)` function which creates a new snake with n-segments and returns it. Then it creates a new apple structure using `new_apple(table)` where table is an array of both columns and lines of the map. The `place_apple()` function updates the apple structures by 'randomizing' x and y coordinate for apple, then it checks if snake is already at these coordinates with `is_snake_at(Snake *s, int x, int y)` function. If this function returns true (snake is there) then it regenerates the apple until it finds an empty place. The `place_apple()` function just places the apple by updating the apple structure but it doesnt draw it and thats where `draw_apple(Apple *a)` function comes into, it takes an apple structure and draws and apple at x and y coordinate defined in the apple structure `a`. Snake moving mechanism is implemented in `update_snake(Snake *s)` function that will wait for user to click an arrow key and depending on the key it will set an moving direction inside a snake structure (up arrow = moving up, left = moving left etc.). Next the `move_snake(Snake *s)` function is called that will read moving direction that was set with `update_snake(Snake *s)` and will either increaseor decrease the `x` or `y` coordinate (depending on the moving direction) of the head. Inside a `while` loop it will iterate on all segments and move these to previous location of previous segment that was moved. Then `draw_snake(Snake *head)` is called which will iterate with `while` loop on every snake segment and print snake character `O` at x and y saved inside at segment. If it reaches an segment where pointer to next segment points to `NULL` then it knows this is last segment and will draw last segment and quit. In every loop it also checks by using `is_snake_on_apple(Snake *s, Apple *a)` function to determine if snakes head x and y coordinate is same as apples coordinate and if yes it returns true. Inside the main loop it calls the `lengthen_snake(Snake *head)` function to add a new segment at the end of the snake. It also checks if snakes head is colliding with other segment or if snake head has hit the border with `is_snake_touching_itself(Snake *head)` and `did_snake_hit_border(Snake *head)` functions.
 
 ### File explanation
 
@@ -96,6 +95,8 @@ void recursive_method(Snake *s) {
 
 - **`bool is_snake_touching_itself(Snake *head)`** - Function that returns `true` if snakes head is on same x and y as any other segment (it means snake collided and player lost).
 
+- **`bool did_snake_hit_border(Snake *head)`** - Returns true if snakes head hits the border
+
 `apple.c`:
 
 - **`Apple *new_apple(int max[2])`** - Function that returns a new apple structure with x and y generated using `rand() % max[0]` to generate x and `rand() % max[1]` to generate y.
@@ -138,7 +139,7 @@ csnake # run the game
 
 # 📋 Plans to add
 
-I plan to add game ending when player leaves the map (currently it just escapes the map and you cant see the snake until you return) and some things like fake apples that are very similar to normal apples but cause random debuff like reversed moving for a while. To optimize the code I also plan to remove recursion and replace it all with iteration methods. Also I will remove `int direction` from snake structure because its dumb way to save snake direction (because its saved in each segment even though you only have to save it for head of the snake).
+I plan to add fake apples (when you get higher score) that give you debuffs for some time like reversed moving for 1 minute. I removed direction variable inside snake structure and moved it to a single global variable.
 
 # ✅ About the project
 

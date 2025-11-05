@@ -27,4 +27,10 @@ bool is_snake_at(Snake *head, int x, int y);
 // Function to check if snake is touching itself (if yes then end the game obviosuly)
 bool is_snake_touching_itself(Snake *head);
 
+// Function to free whole memory that snake segments are using
+void delete_snake(Snake *head);
+
+// Function that returns true if snake head hits the border
+bool did_snake_hit_border(Snake *head);
+
 #endif // SNAKE_H

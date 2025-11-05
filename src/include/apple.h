@@ -2,7 +2,7 @@
 #define APPLE_H
 
 // Function to create a new apple
-Apple new_apple(int max[2]);
+Apple new_apple(size_t max[2]);
 
 // Function to place a new apple on the map
 void place_apple(Apple *apple, Snake *head);
